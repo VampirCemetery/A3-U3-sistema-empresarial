@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content">
+    <h3 class="mb-4">
+      <i class="fa-solid fa-gauge me-2"></i>Dashboard Admin
+    </h3>
+    <div class="row g-3">
+      <div class="col-md-3">
+        <div class="card stat-card shadow-sm">
+          <div class="card-body">
+            <h6><i class="fa-solid fa-dollar-sign me-2"></i>Ventas (mes)</h6>
+            <strong th:text="${ventasMes} ?: 0">0</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stat-card shadow-sm">
+          <div class="card-body">
+            <h6><i class="fa-solid fa-cart-shopping me-2"></i>Compras (mes)</h6>
+            <strong th:text="${comprasMes} ?: 0">0</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stat-card shadow-sm">
+          <div class="card-body">
+            <h6><i class="fa-solid fa-box me-2"></i>Productos</h6>
+            <strong th:text="${productos} ?: 0">0</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stat-card shadow-sm">
+          <div class="card-body">
+            <h6><i class="fa-solid fa-users me-2"></i>Clientes</h6>
+            <strong th:text="${clientes} ?: 0">0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6>Ventas mensuales</h6>
+            <canvas id="chartVentas"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6>Stock bajo</h6>
+            <ul class="list-group" id="lowStockList">
+              <li class="list-group-item">—</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const ctx = document.getElementById('chartVentas');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line', data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            datasets: [{ label: 'Ventas', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }]
+          }
+        });
+      }
+    </script>
+  </div>
+</body>
+
+</html>
