@@ -1,16 +1,16 @@
-# Sistema Empresarial (Spring Boot 3, Java 17, MySQL)
+# Sistema Empresarial (Spring Boot 3, Java 17, PostgreSQL)
 
 ## Requisitos
 - Java 17+
 - Maven
-- MySQL 8.x
+- **PostgreSQL 14+** (Migrado desde MySQL)
 
 ## Configuración
-1. Cree la base de datos ejecutando el script que usted proporcionó (copie su **script completo** en MySQL). Como mínimo:
+1. Cree la base de datos ejecutando el script proporcionado en PostgreSQL. Como mínimo:
    ```sql
    CREATE DATABASE sistema_empresarial;
    ```
-2. Edite `src/main/resources/application.properties` con su usuario/clave de MySQL.
+2. Edite `src/main/resources/application.properties` con su usuario/clave de **PostgreSQL**.
 3. Construya y ejecute:
    ```bash
    mvn spring-boot:run
