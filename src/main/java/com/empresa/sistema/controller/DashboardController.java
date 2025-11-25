@@ -69,4 +69,13 @@ public class DashboardController {
         model.addAttribute("view", "dashboard-compras");
         return "layout";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/catalogo")
+    public String catalogo(Model model) {
+        model.addAttribute("title", "Catálogo de Productos");
+        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("view", "catalogo");
+        return "layout";
+    }
 }

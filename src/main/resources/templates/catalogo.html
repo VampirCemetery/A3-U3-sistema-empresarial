@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de Productos</title>
+</head>
+
+<body>
+  <div th:replace="layout :: *">
+    <div th:fragment="content">
+      <h3 class="mb-3">Catálogo de Productos</h3>
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table id="tbl" class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock Disponible</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="p : ${productos}">
+                  <td th:text="${p.codigo}">COD</td>
+                  <td th:text="${p.nombre}">Nombre</td>
+                  <td th:text="${p.categoria != null ? p.categoria.nombre : '-'}">Cat</td>
+                  <td th:text="${'$' + #numbers.formatDecimal(p.precioVenta, 1, 2)}">0.00</td>
+                  <td>
+                    <span th:if="${p.stockActual > 0}" class="badge bg-success" th:text="${p.stockActual}"></span>
+                    <span th:if="${p.stockActual <= 0}" class="badge bg-danger">Agotado</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <script> new DataTable('#tbl'); </script>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -79,10 +79,10 @@ public class UsuarioServiceImpl implements UsuarioService {
                 u.setPassword(encoder.encode(u.getPassword()));
             }
             if (u.getRoles() == null || u.getRoles().isEmpty()) {
-                Rol defaultRol = rolRepository.findByNombre("VENTAS").orElseGet(() -> {
+                Rol defaultRol = rolRepository.findByNombre("USER").orElseGet(() -> {
                     Rol r = new Rol();
-                    r.setNombre("VENTAS");
-                    r.setDescripcion("Vendedor");
+                    r.setNombre("USER");
+                    r.setDescripcion("Usuario Normal");
                     return rolRepository.save(r);
                 });
                 Set<Rol> roles = new HashSet<>();
@@ -96,5 +96,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
+        usuarioRepository.flush();
     }
 }

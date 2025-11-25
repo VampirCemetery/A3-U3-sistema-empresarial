@@ -1,5 +1,7 @@
 <!— Alerts fragment —>
-<div th:fragment="alerts">
-  <div th:if="${param.setup}" class="alert alert-success">Administrador creado. Inicie sesión.</div>
-  <div th:if="${param.logout}" class="alert alert-info">Sesión cerrada.</div>
-</div>
+  <div th:fragment="alerts">
+    <div th:if="${param.setup}" class="alert alert-success">Administrador creado. Inicie sesión.</div>
+    <div th:if="${param.logout}" class="alert alert-info">Sesión cerrada.</div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  </div>

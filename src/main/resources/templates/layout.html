@@ -41,14 +41,16 @@
     <nav class="sidebar p-3 position-fixed h-100">
       <h5 class="mb-4"><i class="fa-solid fa-cubes me-2"></i>Sistema</h5>
       <ul class="nav flex-column h-100">
-        <li class="nav-item"><a class="nav-link" href="/dashboard/admin"><i
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" href="/dashboard/admin"><i
               class="fa-solid fa-gauge me-2"></i>Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="/inventario/productos"><i
-              class="fa-solid fa-box me-2"></i>Inventario</a></li>
-        <li class="nav-item"><a class="nav-link" href="/dashboard/ventas"><i
-              class="fa-solid fa-cart-shopping me-2"></i>Ventas</a></li>
-        <li class="nav-item"><a class="nav-link" href="/dashboard/compras"><i
-              class="fa-solid fa-truck-field me-2"></i>Compras</a></li>
+        <li class="nav-item"><a class="nav-link" href="/catalogo"><i class="fa-solid fa-store me-2"></i>Catálogo</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','INVENTARIO')"><a class="nav-link"
+            href="/inventario/productos"><i class="fa-solid fa-box me-2"></i>Inventario</a></li>
+        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','VENTAS')"><a class="nav-link"
+            href="/dashboard/ventas"><i class="fa-solid fa-cart-shopping me-2"></i>Ventas</a></li>
+        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','COMPRAS')"><a class="nav-link"
+            href="/dashboard/compras"><i class="fa-solid fa-truck-field me-2"></i>Compras</a></li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" href="/usuarios"><i
               class="fa-solid fa-users-gear me-2"></i>Usuarios</a></li>
 

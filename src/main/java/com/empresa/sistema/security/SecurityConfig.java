@@ -42,7 +42,7 @@ public class SecurityConfig {
                     .anyMatch(a -> a.getAuthority().equals("ROLE_COMPRAS"))) {
                 response.sendRedirect("/dashboard/compras");
             } else {
-                response.sendRedirect("/");
+                response.sendRedirect("/catalogo");
             }
         };
     }
