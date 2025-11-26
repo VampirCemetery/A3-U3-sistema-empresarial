@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clientes</title>
+</head>
+
+<body>
+  <div th:fragment="content">
+    <h3 class="mb-3">Clientes</h3>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="table-responsive">
+          <table id="tbl" class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Identificación</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="c : ${clientes}">
+                <td th:text="${c.identificacion}">ID</td>
+                <td th:text="${c.nombre}">Nombre</td>
+                <td th:text="${c.telefono}">Tel</td>
+                <td th:text="${c.email}">Email</td>
+                <td class="d-flex gap-1">
+                  <form th:action="@{'/clientes/' + ${c.id} + '/delete'}" method="post"
+                    onsubmit="return confirm('¿Eliminar cliente?')">
+                    <button class="btn btn-sm btn-danger py-0 px-2" style="font-size: 0.8rem;"><i
+                        class="fa-solid fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body p-3">
+            <h6 class="mb-3">Nuevo Cliente</h6>
+            <form method="post" th:action="@{/clientes/guardar}" th:object="${cliente}">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <div class="row g-2">
+                <div class="col-12">
+                  <label class="form-label small mb-1">Identificación</label>
+                  <input class="form-control form-control-sm" th:field="*{identificacion}" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small mb-1">Nombre</label>
+                  <input class="form-control form-control-sm" th:field="*{nombre}" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small mb-1">Dirección</label>
+                  <textarea class="form-control form-control-sm" th:field="*{direccion}" rows="2"></textarea>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small mb-1">Teléfono</label>
+                  <input class="form-control form-control-sm" th:field="*{telefono}">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small mb-1">Email</label>
+                  <input type="email" class="form-control form-control-sm" th:field="*{email}">
+                </div>
+              </div>
+              <button class="btn btn-primary w-100 btn-sm mt-3">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script> new DataTable('#tbl'); </script>
+  </div>
+</body>
+
+</html>

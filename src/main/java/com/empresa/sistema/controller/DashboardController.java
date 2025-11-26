@@ -54,22 +54,6 @@ public class DashboardController {
         return "redirect:/inventario/productos";
     }
 
-    @PreAuthorize("hasRole('VENTAS') or hasRole('ADMIN')")
-    @GetMapping("/dashboard/ventas")
-    public String ventas(Model model) {
-        model.addAttribute("title", "Dashboard Ventas");
-        model.addAttribute("view", "dashboard-ventas");
-        return "layout";
-    }
-
-    @PreAuthorize("hasRole('COMPRAS') or hasRole('ADMIN')")
-    @GetMapping("/dashboard/compras")
-    public String compras(Model model) {
-        model.addAttribute("title", "Dashboard Compras");
-        model.addAttribute("view", "dashboard-compras");
-        return "layout";
-    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/catalogo")
     public String catalogo(Model model) {

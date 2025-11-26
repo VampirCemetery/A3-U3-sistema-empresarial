@@ -43,14 +43,43 @@
       <ul class="nav flex-column h-100">
         <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" href="/dashboard/admin"><i
               class="fa-solid fa-gauge me-2"></i>Dashboard</a></li>
+
+        <!-- Sección: Catálogo -->
+        <li class="nav-item mt-3" sec:authorize="hasRole('ADMIN')">
+          <small class="text-muted text-uppercase fw-bold ps-2">Catálogo</small>
+        </li>
         <li class="nav-item"><a class="nav-link" href="/catalogo"><i class="fa-solid fa-store me-2"></i>Catálogo</a>
         </li>
+
+        <!-- Sección: Inventario -->
+        <li class="nav-item mt-3" sec:authorize="hasRole('ADMIN')">
+          <small class="text-muted text-uppercase fw-bold ps-2">Inventario</small>
+        </li>
         <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','INVENTARIO')"><a class="nav-link"
-            href="/inventario/productos"><i class="fa-solid fa-box me-2"></i>Inventario</a></li>
+            href="/inventario/productos"><i class="fa-solid fa-box me-2"></i>Productos</a></li>
+
+        <!-- Sección: Ventas -->
+        <li class="nav-item mt-3" sec:authorize="hasRole('ADMIN')">
+          <small class="text-muted text-uppercase fw-bold ps-2">Ventas</small>
+        </li>
+        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','VENTAS')"><a class="nav-link" href="/clientes"><i
+              class="fa-solid fa-users me-2"></i>Clientes</a></li>
         <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','VENTAS')"><a class="nav-link"
             href="/dashboard/ventas"><i class="fa-solid fa-cart-shopping me-2"></i>Ventas</a></li>
+
+        <!-- Sección: Compras -->
+        <li class="nav-item mt-3" sec:authorize="hasRole('ADMIN')">
+          <small class="text-muted text-uppercase fw-bold ps-2">Compras</small>
+        </li>
+        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','COMPRAS')"><a class="nav-link" href="/proveedores"><i
+              class="fa-solid fa-truck me-2"></i>Proveedores</a></li>
         <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','COMPRAS')"><a class="nav-link"
             href="/dashboard/compras"><i class="fa-solid fa-truck-field me-2"></i>Compras</a></li>
+
+        <!-- Sección: Administración -->
+        <li class="nav-item mt-3" sec:authorize="hasRole('ADMIN')">
+          <small class="text-muted text-uppercase fw-bold ps-2">Administración</small>
+        </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" href="/usuarios"><i
               class="fa-solid fa-users-gear me-2"></i>Usuarios</a></li>
 

@@ -29,12 +29,41 @@ public class CustomUserDetails implements UserDetails {
         return auths;
     }
 
-    @Override public String getPassword() { return usuario.getPassword(); }
-    @Override public String getUsername() { return usuario.getUsername(); }
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return Boolean.TRUE.equals(usuario.getActivo()); }
+    @Override
+    public String getPassword() {
+        return usuario.getPassword();
+    }
 
-    public String getNombreCompleto() { return usuario.getNombreCompleto(); }
+    @Override
+    public String getUsername() {
+        return usuario.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return Boolean.TRUE.equals(usuario.getActivo());
+    }
+
+    public String getNombreCompleto() {
+        return usuario.getNombreCompleto();
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
 }

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle Compra</title>
+</head>
+
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Detalle de Compra <span class="text-muted" th:text="${'#' + compra.numeroFactura}">#FAC</span></h3>
+            <a href="/dashboard/compras" class="btn btn-secondary btn-sm">Volver</a>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="small text-muted">Proveedor</label>
+                        <p class="fw-bold" th:text="${compra.proveedor.nombre}">Proveedor</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="small text-muted">Fecha</label>
+                        <p class="fw-bold" th:text="${compra.fechaCompra}">2023-01-01</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <label class="small text-muted">Total</label>
+                        <h4 class="text-primary" th:text="${'$' + #numbers.formatDecimal(compra.total, 1, 2)}">$0.00
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-light">Productos</div>
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-end">Costo Unit.</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="d : ${compra.detalles}">
+                            <td th:text="${d.producto.nombre}">Prod</td>
+                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(d.precioUnitario, 1, 2)}">0.00
+                            </td>
+                            <td class="text-center" th:text="${d.cantidad}">1</td>
+                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(d.subtotal, 1, 2)}">0.00</td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(compra.subtotal, 1, 2)}">0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">IVA:</td>
+                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(compra.iva, 1, 2)}">0.00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Total:</td>
+                            <td class="text-end fw-bold" th:text="${'$' + #numbers.formatDecimal(compra.total, 1, 2)}">
+                                0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

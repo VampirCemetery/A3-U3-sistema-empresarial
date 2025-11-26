@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nueva Compra</title>
+</head>
+
+<body>
+    <div th:fragment="content">
+        <h3 class="mb-3">Nueva Compra</h3>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Proveedor</label>
+                        <select id="proveedorSelect" class="form-select">
+                            <option value="">Seleccione un proveedor...</option>
+                            <option th:each="p : ${proveedores}" th:value="${p.id}" th:text="${p.nombre}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="text-end w-100">
+                            <h5>Total: <span id="totalDisplay">$0.00</span></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header bg-light">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-4">
+                        <label class="small mb-1">Producto</label>
+                        <select id="productoSelect" class="form-select form-select-sm">
+                            <option value="">Seleccione un producto...</option>
+                            <option th:each="p : ${productos}" th:value="${p.id}" th:data-precio="${p.precioCompra}"
+                                th:text="${p.codigo + ' - ' + p.nombre}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small mb-1">Costo Unit.</label>
+                        <input type="number" id="costoInput" class="form-control form-control-sm" step="0.01">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="small mb-1">Cantidad</label>
+                        <input type="number" id="cantidadInput" class="form-control form-control-sm" value="1" min="1">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm btn-success w-100" onclick="agregarProducto()">
+                            <i class="fa-solid fa-plus me-1"></i>Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th class="text-end" width="120">Costo</th>
+                                <th class="text-center" width="100">Cant.</th>
+                                <th class="text-end" width="120">Subtotal</th>
+                                <th class="text-center" width="80"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="detallesBody">
+                            <!-- Rows added by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <a href="/dashboard/compras" class="btn btn-secondary me-2">Cancelar</a>
+            <button class="btn btn-primary" onclick="guardarCompra()">
+                <i class="fa-solid fa-save me-2"></i>Registrar Compra
+            </button>
+        </div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const csrfToken = /*[[${_csrf.token}]]*/ '';
+            const csrfHeader = /*[[${_csrf.headerName}]]*/ 'X-CSRF-TOKEN';
+            /*]]>*/
+
+            let items = [];
+
+            // Update cost input when product selected
+            document.getElementById('productoSelect').addEventListener('change', function () {
+                const option = this.options[this.selectedIndex];
+                if (option.value) {
+                    const precio = option.getAttribute('data-precio');
+                    document.getElementById('costoInput').value = precio ? precio : 0;
+                }
+            });
+
+            function agregarProducto() {
+                const select = document.getElementById('productoSelect');
+                const cantidadInput = document.getElementById('cantidadInput');
+                const costoInput = document.getElementById('costoInput');
+
+                const productoId = select.value;
+                if (!productoId) return alert('Seleccione un producto');
+
+                const option = select.options[select.selectedIndex];
+                const nombre = option.text;
+                const costo = parseFloat(costoInput.value);
+                const cantidad = parseInt(cantidadInput.value);
+
+                if (cantidad <= 0) return alert('Cantidad inválida');
+                if (isNaN(costo) || costo < 0) return alert('Costo inválido');
+
+                items.push({
+                    productoId: productoId,
+                    nombre: nombre,
+                    costoUnitario: costo,
+                    cantidad: cantidad,
+                    subtotal: cantidad * costo
+                });
+
+                renderTabla();
+                select.value = '';
+                cantidadInput.value = 1;
+                costoInput.value = '';
+            }
+
+            function eliminarItem(index) {
+                items.splice(index, 1);
+                renderTabla();
+            }
+
+            function renderTabla() {
+                const tbody = document.getElementById('detallesBody');
+                tbody.innerHTML = '';
+                let total = 0;
+
+                items.forEach((item, index) => {
+                    total += item.subtotal;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+              <td>${item.nombre}</td>
+              <td class="text-end">$${item.costoUnitario.toFixed(2)}</td>
+              <td class="text-center">${item.cantidad}</td>
+              <td class="text-end">$${item.subtotal.toFixed(2)}</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-danger py-0 px-2" onclick="eliminarItem(${index})">&times;</button>
+              </td>
+            `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('totalDisplay').textContent = '$' + total.toFixed(2);
+            }
+
+            function guardarCompra() {
+                const proveedorId = document.getElementById('proveedorSelect').value;
+                if (!proveedorId) return alert('Seleccione un proveedor');
+                if (items.length === 0) return alert('Agregue al menos un producto');
+
+                const data = {
+                    proveedorId: parseInt(proveedorId),
+                    items: items.map(i => ({
+                        productoId: parseInt(i.productoId),
+                        cantidad: i.cantidad,
+                        costoUnitario: i.costoUnitario
+                    }))
+                };
+
+                fetch('/compras/guardar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        if (res.error) {
+                            alert('Error: ' + res.error);
+                        } else {
+                            alert(res.message);
+                            window.location.href = '/dashboard/compras';
+                        }
+                    })
+                    .catch(err => alert('Error de conexión'));
+            }
+        </script>
+    </div>
+</body>
+
+</html>
