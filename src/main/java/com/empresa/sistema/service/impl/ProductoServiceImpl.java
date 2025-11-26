@@ -22,17 +22,35 @@ public class ProductoServiceImpl implements ProductoService {
     private final UsuarioRepository usuarioRepository;
 
     public ProductoServiceImpl(ProductoRepository productoRepository,
-                               MovimientoInventarioRepository movRepository,
-                               UsuarioRepository usuarioRepository) {
+            MovimientoInventarioRepository movRepository,
+            UsuarioRepository usuarioRepository) {
         this.productoRepository = productoRepository;
         this.movRepository = movRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
-    @Override public List<Producto> findAll() { return productoRepository.findAll(); }
-    @Override public Optional<Producto> findById(Long id) { return productoRepository.findById(id); }
-    @Override public Producto save(Producto p) { return productoRepository.save(p); }
-    @Override public void delete(Long id) { productoRepository.deleteById(id); }
+    @Override
+    public List<Producto> findAll() {
+        return productoRepository.findByActivoTrue();
+    }
+
+    @Override
+    public Optional<Producto> findById(Long id) {
+        return productoRepository.findById(id);
+    }
+
+    @Override
+    public Producto save(Producto p) {
+        return productoRepository.save(p);
+    }
+
+    @Override
+    public void delete(Long id) {
+        productoRepository.findById(id).ifPresent(p -> {
+            p.setActivo(false);
+            productoRepository.save(p);
+        });
+    }
 
     @Override
     public void ajustarStock(Long productoId, int delta, String motivo, Long usuarioId) {
@@ -44,7 +62,8 @@ public class ProductoServiceImpl implements ProductoService {
 
         MovimientoInventario mov = new MovimientoInventario();
         mov.setProducto(p);
-        mov.setTipoMovimiento(delta >= 0 ? MovimientoInventario.TipoMovimiento.ENTRADA : MovimientoInventario.TipoMovimiento.SALIDA);
+        mov.setTipoMovimiento(
+                delta >= 0 ? MovimientoInventario.TipoMovimiento.ENTRADA : MovimientoInventario.TipoMovimiento.SALIDA);
         mov.setCantidad(Math.abs(delta));
         mov.setStockAnterior(anterior);
         mov.setStockActual(nuevo);

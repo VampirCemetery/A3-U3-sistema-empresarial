@@ -47,13 +47,14 @@ public class ProductoController {
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable("id") Long id) {
         productoService.delete(id);
         return "redirect:/inventario/productos";
     }
 
     @PostMapping("/{id}/ajustar")
-    public String ajustar(@PathVariable Long id, @RequestParam int delta, @RequestParam String motivo) {
+    public String ajustar(@PathVariable("id") Long id, @RequestParam("delta") int delta,
+            @RequestParam("motivo") String motivo) {
         productoService.ajustarStock(id, delta, motivo, null);
         return "redirect:/inventario/productos";
     }
