@@ -26,14 +26,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="p : ${productos}">
+                <tr th:each="p : ${productos}" th:class="${p.activo == false ? 'table-secondary text-muted' : ''}">
                   <td th:text="${p.codigo}">COD</td>
-                  <td th:text="${p.nombre}">Nombre</td>
+                  <td>
+                    <span th:text="${p.nombre}">Nombre</span>
+                    <span th:if="${p.activo == false}" class="badge bg-danger ms-2">INACTIVO</span>
+                  </td>
                   <td th:text="${p.categoria != null ? p.categoria.nombre : '-'}">Cat</td>
                   <td th:text="${p.precioVenta}">0.0</td>
                   <td th:text="${p.stockActual}">0</td>
                   <td class="d-flex gap-1">
-                    <form th:action="@{'/inventario/productos/' + ${p.id} + '/ajustar'}" method="post"
+                    <form th:if="${p.activo != false}" th:action="@{'/inventario/productos/' + ${p.id} + '/ajustar'}" method="post"
                       class="d-flex gap-1">
                       <input type="number" class="form-control form-control-sm p-1" name="delta" placeholder="+/-"
                         required style="width:70px; font-size: 0.8rem;">
@@ -42,10 +45,15 @@
                       <button class="btn btn-sm btn-outline-primary py-0 px-2"
                         style="font-size: 0.8rem;">Ajustar</button>
                     </form>
-                    <form th:action="@{'/inventario/productos/' + ${p.id} + '/delete'}" method="post"
+                    <form th:if="${p.activo != false}" th:action="@{'/inventario/productos/' + ${p.id} + '/delete'}" method="post"
                       onsubmit="return confirm('¿Eliminar?')">
                       <button class="btn btn-sm btn-danger py-0 px-2" style="font-size: 0.8rem;"><i
                           class="fa-solid fa-trash"></i></button>
+                    </form>
+                    <form th:if="${p.activo == false}" th:action="@{'/inventario/productos/' + ${p.id} + '/reactivar'}" method="post">
+                      <button class="btn btn-sm btn-success py-0 px-2" style="font-size: 0.8rem;">
+                        <i class="fa-solid fa-rotate-left"></i> Reactivar
+                      </button>
                     </form>
                   </td>
                 </tr>

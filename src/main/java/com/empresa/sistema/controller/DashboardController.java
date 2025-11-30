@@ -58,7 +58,7 @@ public class DashboardController {
     @GetMapping("/catalogo")
     public String catalogo(Model model) {
         model.addAttribute("title", "Catálogo de Productos");
-        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("productos", productoRepository.findByActivoTrue());
         model.addAttribute("view", "catalogo");
         return "layout";
     }

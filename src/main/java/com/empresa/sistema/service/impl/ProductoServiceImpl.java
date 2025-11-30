@@ -35,6 +35,11 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public List<Producto> findAllIncludingInactive() {
+        return productoRepository.findAll();
+    }
+
+    @Override
     public Optional<Producto> findById(Long id) {
         return productoRepository.findById(id);
     }
@@ -48,6 +53,14 @@ public class ProductoServiceImpl implements ProductoService {
     public void delete(Long id) {
         productoRepository.findById(id).ifPresent(p -> {
             p.setActivo(false);
+            productoRepository.save(p);
+        });
+    }
+
+    @Override
+    public void reactivar(Long id) {
+        productoRepository.findById(id).ifPresent(p -> {
+            p.setActivo(true);
             productoRepository.save(p);
         });
     }

@@ -26,7 +26,7 @@ public class ProductoController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("title", "Inventario - Productos");
-        model.addAttribute("productos", productoService.findAll());
+        model.addAttribute("productos", productoService.findAllIncludingInactive());
         model.addAttribute("producto", new Producto());
         model.addAttribute("categorias", categoriaRepository.findAll());
         model.addAttribute("view", "productos-list");
@@ -37,7 +37,7 @@ public class ProductoController {
     public String create(@Valid @ModelAttribute("producto") Producto p, BindingResult br, Model model) {
         if (br.hasErrors()) {
             model.addAttribute("title", "Inventario - Productos");
-            model.addAttribute("productos", productoService.findAll());
+            model.addAttribute("productos", productoService.findAllIncludingInactive());
             model.addAttribute("categorias", categoriaRepository.findAll());
             model.addAttribute("view", "productos-list");
             return "layout";
@@ -49,6 +49,12 @@ public class ProductoController {
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
         productoService.delete(id);
+        return "redirect:/inventario/productos";
+    }
+
+    @PostMapping("/{id}/reactivar")
+    public String reactivar(@PathVariable("id") Long id) {
+        productoService.reactivar(id);
         return "redirect:/inventario/productos";
     }
 
